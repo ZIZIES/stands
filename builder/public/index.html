@@ -4,64 +4,113 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>standq</title>
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <main>
-  <h1>standq</h1>
-  <p class="tag">bundle a vm into a single executable</p>
+  <header class="top">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V7l7 5-7 5"/></svg>
+      <h1>standq</h1>
+    </div>
+    <p class="tag">bundle a vm into a single executable</p>
+  </header>
 
   <form id="build-form">
-    <fieldset>
-      <legend>iso</legend>
-      <input type="file" id="iso" name="iso" accept=".iso,.img" required>
-    </fieldset>
+    <section class="panel">
+      <h2>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+        files
+      </h2>
 
-    <fieldset>
-      <legend>qemu binary</legend>
-      <input type="file" id="qemu" name="qemu" required>
-      <p class="hint">pick a qemu-system binary (x86_64, aarch64, etc). it gets embedded.</p>
-    </fieldset>
+      <div class="drop" id="iso-drop" data-input="iso">
+        <input type="file" id="iso" name="iso" accept=".iso,.img" required>
+        <div class="drop-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          <span class="drop-title">boot iso</span>
+          <span class="drop-sub">drop or click to browse</span>
+        </div>
+        <div class="drop-chosen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          <span class="drop-name"></span>
+          <span class="drop-size"></span>
+        </div>
+      </div>
 
-    <fieldset>
-      <legend>vm settings</legend>
-      <label>target os
-        <select id="os" name="os">
-          <option value="mac">macos</option>
-          <option value="linux">linux</option>
-          <option value="win">windows</option>
-        </select>
-      </label>
-      <label>cpu arch
-        <select id="arch" name="arch">
-          <option value="x86_64">x86_64</option>
-          <option value="aarch64">aarch64</option>
-          <option value="i386">i386</option>
-        </select>
-      </label>
-      <label>ram (mb)
-        <input type="number" id="ram" name="ram" value="512" min="64" max="8192" step="64">
-      </label>
-      <label>cpus
-        <input type="number" id="cpus" name="cpus" value="2" min="1" max="32">
-      </label>
-      <label>disk (gb, optional)
-        <input type="number" id="disk" name="disk" min="1" max="64" placeholder="none">
-      </label>
-      <label>display
-        <select id="display" name="display">
-          <option value="cocoa">cocoa (mac)</option>
-          <option value="gtk">gtk (linux)</option>
-          <option value="sdl">sdl</option>
-          <option value="none">none</option>
-        </select>
-      </label>
-    </fieldset>
+      <div class="drop" id="qemu-drop" data-input="qemu">
+        <input type="file" id="qemu" name="qemu" required>
+        <div class="drop-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
+          <span class="drop-title">qemu binary</span>
+          <span class="drop-sub">drop or click to browse</span>
+        </div>
+        <div class="drop-chosen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
+          <span class="drop-name"></span>
+          <span class="drop-size"></span>
+        </div>
+      </div>
+    </section>
 
-    <button type="submit">build exe</button>
-    <div id="status"></div>
+    <section class="panel">
+      <h2>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        target
+      </h2>
+      <div class="grid">
+        <label>os
+          <select id="os" name="os">
+            <option value="mac">macos</option>
+            <option value="linux">linux</option>
+            <option value="win">windows</option>
+          </select>
+        </label>
+        <label>cpu arch
+          <select id="arch" name="arch">
+            <option value="x86_64">x86_64</option>
+            <option value="aarch64">aarch64</option>
+            <option value="i386">i386</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
+        vm
+      </h2>
+      <div class="grid">
+        <label>ram (mb)
+          <input type="number" id="ram" name="ram" value="512" min="64" max="8192" step="64">
+        </label>
+        <label>cpus
+          <input type="number" id="cpus" name="cpus" value="2" min="1" max="32">
+        </label>
+        <label>disk (gb)
+          <input type="number" id="disk" name="disk" min="1" max="64" placeholder="none">
+        </label>
+        <label>display
+          <select id="display" name="display">
+            <option value="cocoa">cocoa</option>
+            <option value="gtk">gtk</option>
+            <option value="sdl">sdl</option>
+            <option value="none">none</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <footer class="bar">
+      <span id="estimate"></span>
+      <button type="submit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        build exe
+      </button>
+      <div id="status" role="status"></div>
+    </footer>
   </form>
 </main>
-<script src="/app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
