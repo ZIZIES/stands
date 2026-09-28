@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>standq</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+  <h1>standq</h1>
+  <p class="tag">bundle a vm into a single executable</p>
+
+  <form id="build-form">
+    <fieldset>
+      <legend>iso</legend>
+      <input type="file" id="iso" name="iso" accept=".iso,.img" required>
+    </fieldset>
+
+    <fieldset>
+      <legend>qemu binary</legend>
+      <input type="file" id="qemu" name="qemu" required>
+      <p class="hint">pick a qemu-system binary (x86_64, aarch64, etc). it gets embedded.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>vm settings</legend>
+      <label>target os
+        <select id="os" name="os">
+          <option value="mac">macos</option>
+          <option value="linux">linux</option>
+          <option value="win">windows</option>
+        </select>
+      </label>
+      <label>cpu arch
+        <select id="arch" name="arch">
+          <option value="x86_64">x86_64</option>
+          <option value="aarch64">aarch64</option>
+          <option value="i386">i386</option>
+        </select>
+      </label>
+      <label>ram (mb)
+        <input type="number" id="ram" name="ram" value="512" min="64" max="8192" step="64">
+      </label>
+      <label>cpus
+        <input type="number" id="cpus" name="cpus" value="2" min="1" max="32">
+      </label>
+      <label>disk (gb, optional)
+        <input type="number" id="disk" name="disk" min="1" max="64" placeholder="none">
+      </label>
+      <label>display
+        <select id="display" name="display">
+          <option value="cocoa">cocoa (mac)</option>
+          <option value="gtk">gtk (linux)</option>
+          <option value="sdl">sdl</option>
+          <option value="none">none</option>
+        </select>
+      </label>
+    </fieldset>
+
+    <button type="submit">build exe</button>
+    <div id="status"></div>
+  </form>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>
